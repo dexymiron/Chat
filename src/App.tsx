@@ -6,6 +6,7 @@ import { useContext } from 'react'
 import {useAuthState} from 'react-firebase-hooks/auth';
 import { Context } from '.'
 import Loader from './components/Loader/Loader'
+import { LoadScript } from '@react-google-maps/api'
 
 
 const App= () => {
@@ -17,10 +18,19 @@ const App= () => {
     return <Loader/>
   }
 
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+
+  if (!apiKey) {
+    console.error('Google Maps API Key is missing!');
+    return <div>Error: API Key is missing!</div>;
+  }
+
   return (
    <BrowserRouter>
-      <Navbar/>
-      <AppRouter/>
+      <LoadScript googleMapsApiKey={apiKey}>
+        <Navbar/>
+        <AppRouter/>
+      </LoadScript>
    </BrowserRouter>
   )
 }

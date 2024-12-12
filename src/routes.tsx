@@ -1,6 +1,7 @@
 import Chat from "./components/Chat/Chat";
 import Login from "./components/Login/Login";
-import { CHAT_ROUTE, LOGIN_ROUTE } from "./utils/utils";
+import Map from "./components/Map/Map";
+import { CHAT_ROUTE, LOGIN_ROUTE, MAP_ROUTE } from "./utils/utils";
 
 interface RouteType {
     path: string; 
@@ -18,5 +19,10 @@ export const privateRoutes: RouteType[] = [
     {
         path: CHAT_ROUTE,
         element: <Chat/>
+    },
+
+    {
+        path: MAP_ROUTE,
+        element: <Map/>
     },
 ]

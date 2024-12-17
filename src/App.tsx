@@ -27,7 +27,7 @@ const App= () => {
 
   return (
    <BrowserRouter>
-      <LoadScript googleMapsApiKey={apiKey}>
+      <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
         <Navbar/>
         <AppRouter/>
       </LoadScript>

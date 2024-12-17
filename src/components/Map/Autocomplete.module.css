@@ -1,0 +1,43 @@
+.container {
+  position: absolute;
+  z-index: 10;
+  margin-left: 10px;
+  width: 100%;
+}
+
+.suggestion {
+  font-size: 21px;
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid lightgray;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 20%;
+  cursor: pointer;
+  color: rgb(53, 53, 53);
+}
+
+.listItem {
+  border: 1px solid lightgrey;
+  min-height: 40px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputSearch {
+  outline: none;
+  height: 40px;
+  width: 20%;
+  padding-inline: 10px;
+  font-size: 21px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 1px solid lightgray;
+}
+
+.inputSearch:focus {
+  border-bottom-left-radius: 0px;
+}

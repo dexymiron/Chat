@@ -1,0 +1,44 @@
+.addressSearchContainer {
+  position: relative;
+  top: 59px;
+}
+
+.setMakersBtn {
+  position: absolute;
+  z-index: 10;
+  margin-left: 10px;
+  width: 100px;
+  height: 40px;
+  left: 20%;
+
+  outline: none;
+  padding-inline: 10px;
+  font-size: 21px;
+  border: 1px solid lightgray;
+  font-size: 16px;
+  color: rgb(107, 107, 107);
+}
+
+.clearBtn {
+  position: absolute;
+  z-index: 10;
+  margin-left: 10px;
+  width: 100px;
+  height: 40px;
+  left: 23.8%;
+
+  outline: none;
+  padding-inline: 10px;
+  font-size: 21px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid lightgray;
+  font-size: 16px;
+  color: rgb(107, 107, 107);
+}
+
+.setMakersBtn:hover,
+.clearBtn:hover {
+  background-color: grey;
+  color: #fff;
+}

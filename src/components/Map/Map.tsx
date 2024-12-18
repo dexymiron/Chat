@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { DirectionsRenderer, GoogleMap, MarkerF } from "@react-google-maps/api";
 import n from "./Map.module.css";
 import Autocomplete from "./Autocomplete";
 import { getBrowserLocation } from "../../utils/geo";
+import Distance from "./Distance";
+
+type LanLngLiteral = google.maps.LatLngLiteral;
+type DirectionsResult = google.maps.DirectionsResult | null;
 
 const Map = () => {
 
   const containerStyle = {
-      width: '100%',
-      height: '100vh',
+    width: '100%',
+    height: '100vh',
   };
     
   const defaultCenter = {
@@ -30,21 +34,23 @@ const Map = () => {
     getBrowserLocation().then((curLoc) => {
       setCenter(curLoc)
     })
-    .catch((defaultLocation) => {
-      setCenter(defaultLocation)
+    .catch((defaultCenter) => {
+      setCenter(defaultCenter)
     })
   }, [])
 
   const [center, setCenter] = useState(defaultCenter);
-  const [mode, setMode] = useState(MODES.MOVE);
-  const [markers, setMarkers] = useState([]);
+  const [autocompleteLoc, setAutocompleteLoc] = useState<LanLngLiteral | null>(null);
+  const [mode, setMode] = useState<number>(MODES.MOVE);
+  const [markers, setMarkers] = useState<LanLngLiteral[]>([]);
+  const [directions, setDirections] = useState<DirectionsResult>();
 
-  const onMarkerAdd = (coordinates) => {
+  const onMarkerAdd = (coordinates: LanLngLiteral) => {
     setMarkers([...markers, coordinates])
   }
 
-  const onClick = useCallback((loc) => {
-    if (mode === MODES.SET_MARKER) {
+  const onClick = useCallback((loc: google.maps.MapMouseEvent) => {
+    if (mode === MODES.SET_MARKER && loc.latLng) {
       const lat = loc.latLng.lat();
       const lng = loc.latLng.lng();
       onMarkerAdd({lat, lng});
@@ -66,21 +72,47 @@ const Map = () => {
   }, [mode]);
 
 
-  const onPlaceSelect = useCallback((coordinates) => {
-    setCenter(coordinates);
+  const onPlaceSelect = useCallback((coordinates: LanLngLiteral) => {
+    setAutocompleteLoc(coordinates);
   }, []);
 
   const clear = useCallback(() => {
-    setMarkers([])
+    setMarkers([]);
+    setDirections(null);
+    setAutocompleteLoc(null);
   }, [])
+
+  const fetchDirections = useCallback((position: LanLngLiteral) => {
+    if (!center || !position) return;
+
+    const service = new google.maps.DirectionsService();
+    service.route(
+      {
+        origin: center,
+        destination: position,
+        travelMode: google.maps.TravelMode.DRIVING
+      },
+      (result, status) => {
+        if(status === "OK" && result) {
+          setDirections(result);
+        } else {
+          console.log(console.error("Failed to fetch directions:", status))
+        }
+      }
+    )
+  }, [center])
   
 
   return (
         <> 
           <div className={n.addressSearchContainer}>
             <Autocomplete onSelect={onPlaceSelect}/>
-            <button className={n.setMakersBtn} onClick={toggleMode}>Set markers</button>
-            <button className={n.clearBtn} onClick={clear}>Clear</button>
+            <div className={n.buttonsContainer}>
+              <button className={n.setMakersBtn} onClick={toggleMode}>{mode === MODES.MOVE ? <p>Set markers</p> : <p>Normal Mode</p>}</button>
+              <button className={n.clearBtn} onClick={clear}>Clear</button>
+            </div>
+            {directions && 
+            <Distance leg={directions.routes[0].legs[0]}/>}
           </div>
           <GoogleMap
               mapContainerStyle={containerStyle}
@@ -88,14 +120,23 @@ const Map = () => {
               zoom={15}
               onClick={onClick}
           >
-              {markers.map((pos) => <MarkerF key={marker.id} position={pos}/>)}
-              <MarkerF
-              key={marker.id}
-              position={center}
-              //title={marker.title}
-              //label={{text: `${marker.title}`, fontSize: `21px`, color: 'blue'}}
-              >   
-              </MarkerF>
+            {directions && 
+            <DirectionsRenderer directions={directions}/>}
+
+            {markers.map((pos, index) => <MarkerF key={index} position={pos} onClick={() => fetchDirections(pos)}/>)}
+
+            {autocompleteLoc && 
+            <MarkerF key={marker.id} position={autocompleteLoc} onClick={() => fetchDirections(autocompleteLoc)}
+            >   
+            </MarkerF>}
+
+            <MarkerF
+            key={marker.id}
+            position={center}
+            //title={marker.title}
+            label={{text: `Me`, fontSize: `16px`, color: '#fff'}}
+            >   
+            </MarkerF>
           </GoogleMap>
         </>
   )

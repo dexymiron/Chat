@@ -3,7 +3,12 @@ const defaultCenter = {
     lng: -73.83564909935048,
 };
 
-export const getBrowserLocation = () => {
+type coordinates = {
+    lat: number,
+    lng: number
+}
+
+export const getBrowserLocation = (): Promise<coordinates> => {
     return new Promise((resolve, reject) => {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(

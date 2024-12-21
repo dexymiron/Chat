@@ -1,7 +1,8 @@
 import Chat from "./components/Chat/Chat";
 import Login from "./components/Login/Login";
 import Map from "./components/Map/Map";
-import { CHAT_ROUTE, LOGIN_ROUTE, MAP_ROUTE } from "./utils/utils";
+import SubscriptionPage from "./components/Stripe/Subscribtion";
+import { CHAT_ROUTE, LOGIN_ROUTE, MAP_ROUTE, STRIPE_ROUTE } from "./utils/utils";
 
 interface RouteType {
     path: string; 
@@ -24,5 +25,9 @@ export const privateRoutes: RouteType[] = [
     {
         path: MAP_ROUTE,
         element: <Map/>
+    },
+    {
+        path: STRIPE_ROUTE,
+        element: <SubscriptionPage/>
     },
 ]

@@ -15,6 +15,7 @@
         const q = query(messagesRef, orderBy('createdAt'));
 
         const [messages, loading, error] = useCollectionData(q, { idField: 'id' });
+        
 
         const sendMessage = async () => {
             if (!value.trim()) return;
@@ -50,8 +51,8 @@
                                 key={msg.id} 
                                 style={{margin: '10px', 
                                         padding: '10px', 
-                                        border: user.uid === msg.uid ? '2px solid green' : '2px dashed red',
-                                        marginLeft: user.uid === msg.uid ? 'auto' : '10px',
+                                        border: user?.uid === msg.uid ? '2px solid green' : '2px dashed red',
+                                        marginLeft: user?.uid === msg.uid ? 'auto' : '10px',
                                         width: 'fit-content' }}>   
                                 <Grid2 container spacing={1}>
                                         <Avatar src={msg.photoURL}/>

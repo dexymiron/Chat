@@ -10,15 +10,15 @@ import {getAuth} from 'firebase/auth';
 // Initialize Firebase
 const app = initializeApp(
   {
-  apiKey: "AIzaSyCLDrAFwU4o4IUtEk3MoDfhyRPsnsISImc",
-  authDomain: "my-app-2-d2439.firebaseapp.com",
-  projectId: "my-app-2-d2439",
-  storageBucket: "my-app-2-d2439.firebasestorage.app",
-  messagingSenderId: "788463909065",
-  appId: "1:788463909065:web:3b594b0055d7bd88ab3518",
-  measurementId: "G-X1853Z3VKZ"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 });
-const analytics = getAnalytics(app);
+getAnalytics(app);
 
 interface FirebaseContextType {
   auth: ReturnType<typeof getAuth>;
